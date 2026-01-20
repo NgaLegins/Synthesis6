@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hydra Text Animation</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: black;
+        }
+        canvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+    <script src="https://unpkg.com/hydra-synth"></script>
+    <script>
+        const hydra = new Hydra({
+            detectAudio: false,
+            enableStreamCapture: false,
+        })
+
+        const c = document.createElement('canvas')
+        c.width = window.innerWidth
+        c.height = window.innerHeight
+        const ctx = c.getContext('2d')
+
+        const words = ["YOU", "ARE", "ONE"]
+        const speed = 0.5
+
+        update = () => {
+            const t = time * speed
+            const index = Math.floor(t) % words.length
+            const alpha = Math.abs(Math.sin(t * Math.PI))
+
+            ctx.clearRect(0, 0, c.width, c.height)
+            
+            ctx.fillStyle = `rgba(255, 255, 255, ${alpha})`
+            ctx.font = "bold 20vw serif"
+            ctx.textAlign = "center"
+            ctx.textBaseline = "middle"
+            ctx.fillText(words[index], c.width / 2, c.height / 2)
+
+            ctx.strokeStyle = `rgba(255, 255, 255, ${alpha})`
+            ctx.lineWidth = c.width * 0.005
+            ctx.strokeText(words[index], c.width / 2, c.height / 2)
+        }
+
+        s0.init({ src: c })
+
+        src(s0)
+            .scale(1)
+            .blend(src(o0).scale(1.02).colorama(0.02), 0.9)
+            .modulateScale(noise(1, 1), 0.2)
+            .out()
+    </script>
+</body>
+</html>
